@@ -161,6 +161,8 @@ Retrieves metadata for a given URL.
  - 502 -	Upstream service unreachable
  - 504 -	Upstream timeout
 
+---
+
 ## 🧪 Example CURL Commands
 
 ### Create Metadata
@@ -190,6 +192,8 @@ curl "http://localhost:8000/metadata?url=https://newsite.com"
   "message": "Request accepted. Metadata collection initiated."
 }
 ```
+
+---
 
 ## 🧠 Design Decisions
 
