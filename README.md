@@ -16,7 +16,7 @@ The project is fully containerized using Docker Compose and includes a comprehen
 
 ---
 
-# 🏗 Architecture Overview
+## 🏗 Architecture Overview
 
 The project follows a layered architecture, ensuring clean separation of concerns and scalability.
 
@@ -28,30 +28,30 @@ app/
 ├── dto/ → Request/Response models
 ├── tests/ → Pytest test suite
 
-## Layer Responsibilities
+### Layer Responsibilities
 
-### Controller Layer
+#### Controller Layer
 - Handles HTTP transport
 - Performs input validation via Pydantic
 - Returns appropriate HTTP status codes
 
-### Service Layer
+#### Service Layer
 - Contains business logic
 - Manages background metadata collection
 - Orchestrates repository and fetch services
 
-### Repository Layer
+#### Repository Layer
 - Handles MongoDB persistence
 - Provides indexed lookup by URL
 
-### Configuration Layer
+#### Configuration Layer
 - Manages environment-based configuration
 - Handles MongoDB connection lifecycle
 - Implements retry logic for DB startup delays
 
 ---
 
-# ⚙️ System Design Highlights
+## ⚙️ System Design Highlights
 
 - Asynchronous I/O using `async/await`
 - Non-blocking background processing via FastAPI `BackgroundTasks`
@@ -63,13 +63,13 @@ app/
 
 ---
 
-# 🚀 How to Run
+## 🚀 How to Run
 
-## Prerequisites
+### Prerequisites
 
 - Docker Desktop installed and running
 
-## Start the Application
+### Start the Application
 
 From the project root directory:
 
@@ -81,7 +81,7 @@ This will start:
  - MongoDB container
  - FastAPI application container
 
-## Access the API
+### Access the API
  - Swagger UI:
    http://localhost:8000/docs
 
@@ -90,9 +90,9 @@ This will start:
 
 ---
 
-# 🧪 How to Test
+## 🧪 How to Test
 
-## Run Tests Inside Docker
+### Run Tests Inside Docker
 
 ```bash
 docker exec -it metadata_api pytest
@@ -107,26 +107,22 @@ You will see:
 The test suite covers:
 
  - POST endpoint success case
-
  - GET cache hit
-
  - GET cache miss (202 behavior)
-
  - Invalid URL handling
-
  - Input validation
 
 All external HTTP calls and database operations are mocked for deterministic unit testing.
 
 ---
 
-# 📡 API Endpoints
+## 📡 API Endpoints
 
-## POST /metadata
+### POST /metadata
 
 Creates and stores metadata for a given URL.
 
-### Request Body
+#### Request Body
 
 ```JSON
 {
@@ -134,9 +130,7 @@ Creates and stores metadata for a given URL.
 }
 ```
 
-### Response (200 OK)
-
-### Request Body
+#### Response (200 OK)
 
 ```JSON
 {
@@ -147,27 +141,27 @@ Creates and stores metadata for a given URL.
 }
 ```
 
-## GET /metadata
+### GET /metadata
 
 Retrieves metadata for a given URL.
 
-### Query Parameter
+#### Query Parameter
 
 ```code
 ?url=https://example.com
 ```
 
-### Possible Responses
+#### Possible Responses
 
-200 -	Metadata found in inventory
-202 -	Metadata collection initiated
-422 -	Invalid URL format
-502 -	Upstream service unreachable
-504 -	Upstream timeout
+ - 200 -	Metadata found in inventory
+ - 202 -	Metadata collection initiated
+ - 422 -	Invalid URL format
+ - 502 -	Upstream service unreachable
+ - 504 -	Upstream timeout
 
-# 🧪 Example CURL Commands
+## 🧪 Example CURL Commands
 
-## Create Metadata
+### Create Metadata
 
 ```bash
 curl -X POST http://localhost:8000/metadata \
@@ -175,19 +169,19 @@ curl -X POST http://localhost:8000/metadata \
 -d '{"url":"https://example.com"}'
 ``` 
 
-## Retrieve Metadata (Cache Hit)
+### Retrieve Metadata (Cache Hit)
 
 ```bash
 curl "http://localhost:8000/metadata?url=https://example.com"
 ```
 
-## Retrieve Metadata (Cache Miss → 202)
+### Retrieve Metadata (Cache Miss → 202)
 
 ```bash
 curl "http://localhost:8000/metadata?url=https://newsite.com"
 ```
 
-## Response:
+### Response:
 
 ```JSON
 {
@@ -195,44 +189,37 @@ curl "http://localhost:8000/metadata?url=https://newsite.com"
 }
 ```
 
-# 🧠 Design Decisions
+## 🧠 Design Decisions
 
-## Asynchronous Architecture
+### Asynchronous Architecture
 
 The application uses async/await and httpx.AsyncClient to efficiently handle I/O-bound tasks such as HTTP calls and database operations.
 
-## Non-Blocking Background Collection
+### Non-Blocking Background Collection
 
 When a GET request results in a cache miss:
 
  - The API immediately returns 202 Accepted
-
  - A background task is scheduled internally
-
  - No external self-calls or polling loops are used
-
  - The request-response cycle remains non-blocking
 
-## Database Resilience
+### Database Resilience
 
  - MongoDB connection uses retry logic
-
  - Unique index on url ensures efficient lookups
-
  - Graceful startup and shutdown lifecycle handling
-
-## Validation Strategy
+   
+### Validation Strategy
 
  - URL validation occurs at the controller layer using HttpUrl
-
  - Invalid URLs never reach the service layer
-
  - Proper HTTP status codes are returned
-
-## Containerized Deployment
+   
+### Containerized Deployment
 
  - Uses Docker Compose for isolated local development
-
  - Environment variables control configuration
-
  - API communicates with MongoDB via Docker network hostname
+
+---
