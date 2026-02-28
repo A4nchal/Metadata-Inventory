@@ -1,4 +1,5 @@
 from fastapi import APIRouter, BackgroundTasks, status
+from pydantic import HttpUrl
 from app.dto.request import Request
 from app.service.metadataService import MetadataService
 
@@ -17,5 +18,5 @@ async def create_metadata(request: Request):
             502: {"description": "Upstream service unreachable"},
             504: {"description": "Upstream timeout"},
     })
-async def get_metadata(url: str, background_tasks: BackgroundTasks):
+async def get_metadata(url: HttpUrl, background_tasks: BackgroundTasks):
     return await service.get_metadata(str(url), background_tasks)
