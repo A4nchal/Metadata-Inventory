@@ -11,9 +11,21 @@ class MetadataService:
         self.fetcher = FetchService()
 
     async def create_metadata(self, url: str):
-        data = await self.fetcher.fetch(url)
-        await self.repo.save(data)
-        return data
+        try:
+            data = await self.fetcher.fetch(url)
+            await self.repo.save(data)
+            return data
+
+        except HTTPException:
+            # Already a proper HTTP error from fetcher
+            raise
+
+        except Exception:
+            # Unexpected failure
+            raise HTTPException(
+                status_code=502,
+                detail="Failed to retrieve metadata from upstream service"
+            )
 
     async def get_metadata(self, url: str, background_tasks: BackgroundTasks):
         record = await self.repo.find_by_url(url)
