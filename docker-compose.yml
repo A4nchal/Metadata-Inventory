@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:6
+    container_name: metadata_mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  api:
+    build: .
+    container_name: metadata_api
+    depends_on:
+      - mongodb
+    ports:
+      - "8000:8000"
+    environment:
+      MONGO_URI: mongodb://mongodb:27017
+      DB_NAME: metadata_db
+      REQUEST_TIMEOUT: 10
+
+volumes:
+  mongo_data:
