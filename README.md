@@ -94,27 +94,38 @@ This will start:
 
 ## 🧪 How to Test
 
+The project includes a comprehensive async test suite using pytest, covering:
+
+ - POST /metadata (success & invalid URL)
+ - GET /metadata (cache hit → 200)
+ - GET /metadata (cache miss → 202 + background task)
+ - Service layer logic
+ - Error handling & validation 
+ - External HTTP failures
+
+All external dependencies are mocked:
+
+ - FetchService.fetch() → mocked (no real HTTP calls)
+ - MetadataRepository → mocked (no real MongoDB)
+
 ### Run Tests Inside Docker
 
 ```bash
 docker exec -it metadata_api pytest
 ```
 
-You will see:
+### Run with Coverage
 
-```code
-5 passed
+```bash
+docker exec -it metadata_api pytest --cov=app
 ```
 
-The test suite covers:
+This ensures validation of:
 
- - POST endpoint success case
- - GET cache hit
- - GET cache miss (202 behavior)
- - Invalid URL handling
- - Input validation
-
-All external HTTP calls and database operations are mocked for deterministic unit testing.
+ - Layer separation
+ - Async background scheduling
+ - Proper HTTP status codes
+ - Deterministic, isolated unit tests
 
 ---
 
