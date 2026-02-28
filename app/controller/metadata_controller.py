@@ -1,7 +1,7 @@
 from fastapi import APIRouter, BackgroundTasks, status
 from pydantic import HttpUrl
 from app.dto.request import Request
-from app.service.metadataService import MetadataService
+from app.service.metadata_service import MetadataService
 
 router = APIRouter(prefix="/metadata", tags=["Metadata"])
 

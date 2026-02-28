@@ -1,7 +1,7 @@
 from fastapi import BackgroundTasks, status, HTTPException
 from fastapi.responses import JSONResponse
-from app.repository.metadataRepository import MetadataRepository
-from app.service.fetchService import FetchService
+from app.repository.metadata_repository import MetadataRepository
+from app.service.fetch_service import FetchService
 import httpx
 
 class MetadataService:

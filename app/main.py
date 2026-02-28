@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from app.config.database import mongo
-from app.controller.metadataController import router as metadata_router
+from app.controller.metadata_controller import router as metadata_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
