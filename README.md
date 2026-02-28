@@ -20,6 +20,7 @@ The project is fully containerized using Docker Compose and includes a comprehen
 
 The project follows a layered architecture, ensuring clean separation of concerns and scalability.
 
+```
 app/
 ├── controller/ → API layer (FastAPI endpoints)
 ├── service/ → Business logic layer
@@ -27,6 +28,7 @@ app/
 ├── config/ → Configuration & database setup
 ├── dto/ → Request/Response models
 ├── tests/ → Pytest test suite
+```
 
 ### Layer Responsibilities
 
